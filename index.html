@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tatlı Kaşığı</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 3C16 3 7 15 7 23a9 9 0 0 0 18 0C25 15 16 3 16 3z' fill='%232c1d11'/><path d='M16 7C16 7 10 16 10 22a6 6 0 0 0 12 0C22 16 16 7 16 7z' fill='%231a0f07' opacity='0.5'/></svg>">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- GSAP ve Eklentileri -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="login-screen">
+        <div class="login-stars"></div>
+        <div class="login-glow"></div>
+
+        <svg class="login-lily-bg ll-1" viewBox="0 0 100 100">
+            <path d="M50 90 C30 60, 40 20, 50 10 C60 20, 70 60, 50 90 Z" fill="rgba(255,255,255,0.1)" stroke="#d4af37"
+                stroke-width="1" />
+            <path d="M50 90 C45 60, 48 30, 50 20 C52 30, 55 60, 50 90 Z" fill="rgba(255,255,255,0.4)" />
+        </svg>
+        <svg class="login-lily-bg ll-2" viewBox="0 0 100 100">
+            <path d="M50 90 C30 60, 40 20, 50 10 C60 20, 70 60, 50 90 Z" fill="rgba(255,255,255,0.1)" stroke="#d4af37"
+                stroke-width="1" />
+            <path d="M50 90 C45 60, 48 30, 50 20 C52 30, 55 60, 50 90 Z" fill="rgba(255,255,255,0.4)" />
+        </svg>
+        <svg class="login-lily-bg ll-3" viewBox="0 0 100 100">
+            <path d="M50 90 C30 60, 40 20, 50 10 C60 20, 70 60, 50 90 Z" fill="rgba(255,255,255,0.1)" stroke="#d4af37"
+                stroke-width="1" />
+        </svg>
+        <svg class="login-lily-bg ll-4" viewBox="0 0 100 100">
+            <path d="M50 90 C30 60, 40 20, 50 10 C60 20, 70 60, 50 90 Z" fill="rgba(255,255,255,0.1)" stroke="#d4af37"
+                stroke-width="1" />
+        </svg>
+
+        <div class="login-card" id="login-card">
+            <h2 class="login-title serif">Bu dünyaya girmek için...</h2>
+            <div class="input-group">
+                <input type="password" id="pwd-input" placeholder="Sihirli kelimeyi fısılda..." autocomplete="off">
+                <p id="login-error" class="serif">Belki de yanlış hatırlıyorsun...</p>
+            </div>
+            <button id="btn-login">Kilidi Aç</button>
+        </div>
+    </div>
+
+    <canvas id="bg-canvas"></canvas>
+    <div id="scroll-proxy"></div>
+    <div id="fixed-ui">
+
+        <div id="sec-intro" class="fs-layer">
+            <h1 class="intro-title script" id="text-intro">Hoş geldin tatlı kaşığı,<br><span>Sana Özel Bir Yerim
+                    Var...</span>
+            </h1>
+            <h2 class="transition-text serif" id="text-transition">Hazırsan Kitabımız Seni Bekliyor</h2>
+        </div>
+
+        <div id="sec-book" class="fs-layer">
+            <div class="book-wrapper" id="the-book">
+                <div class="book-part page-base">
+                    <div class="face front">
+                        <h3 class="couple-names script" id="first-page-names">Fatoş <span>❤️</span> Aziz</h3>
+                    </div>
+                    <div class="face back"></div>
+                </div>
+                <div class="book-part cover">
+                    <div class="face front"></div>
+                    <div class="face back"></div>
+                </div>
+
+                <div id="book-seal" class="seal-container">
+                    <div class="seal-half left">
+                        <div class="seal-bg"></div>
+                        <span class="seal-text">F</span>
+                    </div>
+                    <div class="seal-half right">
+                        <div class="seal-bg"></div>
+                        <span class="seal-text">A</span>
+                    </div>
+                    <span class="seal-center-heart">❤️</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="inside-book-bg" class="fs-layer">
+            <svg class="lily lily-top-left" viewBox="0 0 100 100">
+                <path d="M10 10 C40 30, 80 40, 90 50 C80 60, 40 70, 10 90 C30 60, 40 20, 10 10 Z"
+                    fill="rgba(255,255,255,0.2)" stroke="#f4c2c2" stroke-width="1" />
+                <path d="M10 10 C30 40, 60 45, 80 50 C60 55, 30 60, 10 90 C25 60, 30 30, 10 10 Z" fill="#fff" />
+            </svg>
+            <svg class="lily lily-bottom-right" viewBox="0 0 100 100">
+                <path d="M10 10 C40 30, 80 40, 90 50 C80 60, 40 70, 10 90 C30 60, 40 20, 10 10 Z"
+                    fill="rgba(255,255,255,0.2)" stroke="#f4c2c2" stroke-width="1" />
+                <path d="M10 10 C30 40, 60 45, 80 50 C60 55, 30 60, 10 90 C25 60, 30 30, 10 10 Z" fill="#fff" />
+            </svg>
+            <svg class="lily lily-bottom-left" viewBox="0 0 100 100">
+                <path d="M10 10 C40 30, 80 40, 90 50 C80 60, 40 70, 10 90 C30 60, 40 20, 10 10 Z" fill="#fff"
+                    stroke="#f4c2c2" stroke-width="1" />
+            </svg>
+            <svg class="lily lily-top-right" viewBox="0 0 100 100">
+                <path d="M10 10 C40 30, 80 40, 90 50 C80 60, 40 70, 10 90 C30 60, 40 20, 10 10 Z" fill="#fff"
+                    stroke="#f4c2c2" stroke-width="1" />
+            </svg>
+
+            <div id="particles-container"></div>
+
+            <div class="page-wrapper" id="page-1">
+                <h2 class="inside-title serif">Seninle Geçen Her Saniye...</h2>
+                <div class="heart-counter-container">
+                    <svg class="heart-svg" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+                        <path class="heart-path" id="anim-heart"
+                            d="M 100 170 C 100 170, 10 100, 10 50 C 10 15, 50 5, 80 25 C 100 40, 100 40, 100 40 C 100 40, 100 40, 120 25 C 150 5, 190 15, 190 50 C 190 100, 100 170, 100 170 Z" />
+                    </svg>
+                    <div class="counters" id="heart-counters">
+                        <div class="counter-box"><span class="counter-number" id="c-days">00</span><span
+                                class="counter-label">Gün</span></div>
+                        <div class="counter-box"><span class="counter-number" id="c-hours">00</span><span
+                                class="counter-label">Saat</span></div>
+                        <div class="counter-box"><span class="counter-number" id="c-mins">00</span><span
+                                class="counter-label">Dakika</span></div>
+                        <div class="counter-box"><span class="counter-number" id="c-secs">00</span><span
+                                class="counter-label">Saniye</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-wrapper" id="page-2">
+                <h2 class="inside-title serif">Neden Sen?</h2>
+                <div class="cards-grid">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front"><svg class="card-icon" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                </svg>
+                                <h3 class="card-title">Karakterin</h3><span class="card-tap-hint">Dokun</span>
+                            </div>
+                            <div class="flip-card-back">
+                                <p class="card-desc">İçindeki o saf iyilik, merhamet ve güçlü duruşunla bana her zaman
+                                    ilham veriyorsun.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front"><svg class="card-icon" viewBox="0 0 24 24">
+                                    <path d="M5 16h14l-1.5-9L15 11l-3-6-3 6-2.5-4L5 16zm0 2h14v2H5z" />
+                                </svg>
+                                <h3 class="card-title">Duruşun</h3><span class="card-tap-hint">Dokun</span>
+                            </div>
+                            <div class="flip-card-back">
+                                <p class="card-desc">Hayata karşı asil ve kendinden emin duruşun, dünyadaki en güvenli
+                                    limanım.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front"><svg class="card-icon" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zm-1 19h2v2h-2z" />
+                                </svg>
+                                <h3 class="card-title">Zekan</h3><span class="card-tap-hint">Dokun</span>
+                            </div>
+                            <div class="flip-card-back">
+                                <p class="card-desc">Olaylara bakış açın, kıvrak zekan ve sohbetinin derinliği beni her
+                                    geçen gün büyülüyor.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front"><svg class="card-icon" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-2.5-8.5c.83 0 1.5-.67 1.5-1.5S10.33 8.5 9.5 8.5 8 9.17 8 10s.67 1.5 1.5 1.5zm5 0c.83 0 1.5-.67 1.5-1.5S15.33 8.5 14.5 8.5 13 9.17 13 10s.67 1.5 1.5 1.5zm-2.5 5c2.33 0 4.31-1.46 5.11-3.5H8.89c.8 2.04 2.78 3.5 5.11 3.5z" />
+                                </svg>
+                                <h3 class="card-title">Gülüşün</h3><span class="card-tap-hint">Dokun</span>
+                            </div>
+                            <div class="flip-card-back">
+                                <p class="card-desc">Gülümsediğinde zihnim de parlayan o ışık, karanlık tüm günlerimi
+                                    aydınlatmaya yetiyor.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-wrapper" id="page-3">
+                <div class="poem-glow-bg"></div>
+                <h2 class="inside-title serif" style="color: #8c2a3e;">Sana Dair...</h2>
+                <div class="poem-container">
+                    <div class="poem-line" data-text="Bir gülüşünle aydınlandı zihnimdeki her bir köşe loş,"></div>
+                    <div class="poem-line space" data-text="Altüst oldu dengem, ansızın kalbime dokundun Fatoş."></div>
+                    <div class="poem-line" data-text="Gelişinle doldu ruhum, sensiz geçen onca yıl bomboş,"></div>
+                    <div class="poem-line space" data-text="Seninle dindi fırtınam, şimdi gönlüm sevdanla sarhoş.">
+                    </div>
+                    <div class="poem-line" data-text="Gelişinle dağıldı kalbimin ördüğü o suni mahrem,"></div>
+                    <div class="poem-line space" data-text="Bakışınla sarsıldı, kökünden koptu en derin mahzen."></div>
+                    <div class="poem-line" data-text="Sen ki zamansız gelen en şifalı, en ağır merhem,"></div>
+                    <div class="poem-line" data-text="Girdabında kaybolduğum, dengemi yitirdiğim o tek mahzen..."></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sec-journey" class="fs-layer">
+            <div class="journey-title-container">
+                <h2 class="journey-title serif">Yolculuğumuz</h2>
+            </div>
+            <div class="route-container" id="route-container">
+                <svg class="route-svg" viewBox="0 0 400 3500" preserveAspectRatio="none">
+                    <path
+                        d="M 100 0 C 300 200, 300 400, 200 600 C 100 800, 100 1000, 200 1200 C 300 1400, 300 1600, 200 1800 C 100 2000, 100 2200, 200 2400 C 300 2600, 300 2800, 200 3000 C 100 3200, 100 3400, 200 3500"
+                        fill="none" stroke="#4a2121" stroke-width="2" stroke-dasharray="5 5" opacity="0.4" />
+                    <path id="route-path-active"
+                        d="M 100 0 C 300 200, 300 400, 200 600 C 100 800, 100 1000, 200 1200 C 300 1400, 300 1600, 200 1800 C 100 2000, 100 2200, 200 2400 C 300 2600, 300 2800, 200 3000 C 100 3200, 100 3400, 200 3500"
+                        fill="none" stroke="#c9a65f" stroke-width="4" stroke-linecap="round" />
+                </svg>
+                <svg id="bicycle-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M5.5 18C7.433 18 9 16.433 9 14.5C9 12.567 7.433 11 5.5 11C3.567 11 2 12.567 2 14.5C2 16.433 3.567 18 5.5 18Z"
+                        stroke="#c9a65f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M18.5 18C20.433 18 22 16.433 22 14.5C22 12.567 20.433 11 18.5 11C16.567 11 15 12.567 15 14.5C15 16.433 16.567 18 18.5 18Z"
+                        stroke="#c9a65f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M5.5 14.5H8L11 9H14" stroke="#c9a65f" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M11 18V13.5L13.5 9L16 4H18.5" stroke="#c9a65f" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M15.5 14.5L13.5 12.5" stroke="#c9a65f" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M9 4.5H12" stroke="#c9a65f" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <div class="waypoint wp-1">
+                    <div class="wp-dot"></div>
+                    <div class="wp-text">Hayatıma girdiğin<br>o mucizevi gün...</div>
+                </div>
+                <div class="waypoint wp-2">
+                    <div class="wp-dot"></div>
+                    <div class="wp-text">Sesinle uyanduğım<br>ilk gün...</div>
+                </div>
+                <div class="waypoint wp-3">
+                    <div class="wp-dot"></div>
+                    <div class="wp-text">İlk buluşmamız...</div>
+                </div>
+                <div class="waypoint wp-4">
+                    <div class="wp-dot"></div>
+                    <div class="wp-text">Kim bilir hangi özel an...</div>
+                </div>
+                <div class="waypoint wp-5">
+                    <div class="wp-dot"></div>
+                    <div class="wp-text">Kim bilir hangi özel an...</div>
+                </div>
+                <div class="waypoint wp-6">
+                    <div class="wp-dot"></div>
+                    <div class="wp-text">Kim bilir hangi özel an...</div>
+                </div>
+                <div class="waypoint wp-7">
+                    <div class="wp-dot"></div>
+                    <div class="wp-text serif">∞<span class="wp-7-sub script">Ve devamı gelecek...</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sec-lantern" class="fs-layer interactive">
+            <h2 class="lantern-title serif">Birlikte Geçecek Güzel Günler İçin...</h2>
+            <button id="btn-wish">Bir Dilek Tut</button>
+            <div id="lantern-container"></div>
+        </div>
+
+        <div id="sec-daisy" class="fs-layer interactive">
+            <h2 class="daisy-title serif">Papatya Falı</h2>
+            <p class="daisy-subtitle">Senin için bir yaprak kopar...</p>
+
+            <div class="daisy-container">
+                <svg viewBox="0 0 200 200" id="daisy-svg">
+                    <defs>
+                        <radialGradient id="daisy-center" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#ffe066" />
+                            <stop offset="70%" stop-color="#f4c20d" />
+                            <stop offset="100%" stop-color="#d9aa00" />
+                        </radialGradient>
+                    </defs>
+                    <path d="M 100,100 C 100,140 120,170 110,220" stroke="#5c8a29" stroke-width="6" fill="none" />
+                    <g id="petals">
+                        <g style="transform-origin: 100px 100px; transform: rotate(0deg);">
+                            <path class="petal" d="M 95,80 C 80,30 90,5 100,5 C 110,5 120,30 105,80 Z" />
+                        </g>
+                        <g style="transform-origin: 100px 100px; transform: rotate(40deg);">
+                            <path class="petal" d="M 95,80 C 80,30 90,5 100,5 C 110,5 120,30 105,80 Z" />
+                        </g>
+                        <g style="transform-origin: 100px 100px; transform: rotate(80deg);">
+                            <path class="petal" d="M 95,80 C 80,30 90,5 100,5 C 110,5 120,30 105,80 Z" />
+                        </g>
+                        <g style="transform-origin: 100px 100px; transform: rotate(120deg);">
+                            <path class="petal" d="M 95,80 C 80,30 90,5 100,5 C 110,5 120,30 105,80 Z" />
+                        </g>
+                        <g style="transform-origin: 100px 100px; transform: rotate(160deg);">
+                            <path class="petal" d="M 95,80 C 80,30 90,5 100,5 C 110,5 120,30 105,80 Z" />
+                        </g>
+                        <g style="transform-origin: 100px 100px; transform: rotate(200deg);">
+                            <path class="petal" d="M 95,80 C 80,30 90,5 100,5 C 110,5 120,30 105,80 Z" />
+                        </g>
+                        <g style="transform-origin: 100px 100px; transform: rotate(240deg);">
+                            <path class="petal" d="M 95,80 C 80,30 90,5 100,5 C 110,5 120,30 105,80 Z" />
+                        </g>
+                        <g style="transform-origin: 100px 100px; transform: rotate(280deg);">
+                            <path class="petal" d="M 95,80 C 80,30 90,5 100,5 C 110,5 120,30 105,80 Z" />
+                        </g>
+                        <g style="transform-origin: 100px 100px; transform: rotate(320deg);">
+                            <path class="petal" d="M 95,80 C 80,30 90,5 100,5 C 110,5 120,30 105,80 Z" />
+                        </g>
+                    </g>
+                    <circle cx="100" cy="100" r="20" fill="url(#daisy-center)" />
+                </svg>
+            </div>
+
+            <div class="daisy-text-wrapper">
+                <div id="daisy-text" class="script"></div>
+            </div>
+        </div>
+
+        <!-- --- YENİ BÖLÜM: SİHİRLİ DOKUNUŞ --- -->
+        <div id="sec-sync" class="fs-layer interactive">
+            <h2 class="sync-title serif">Sihirli Dokunuş</h2>
+            <p class="sync-subtitle" id="sync-sub">Bağımızı hissetmek için parmağını basılı tut...<br><span
+                    style="font-size:0.7em; opacity:0.6;">(Sayfayı durdur ve bekle)</span></p>
+
+            <div class="sync-interaction-area" id="sync-container">
+                <svg class="sync-heart" viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+                    <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                    </path>
+                </svg>
+                <svg class="sync-ring-svg" viewBox="0 0 160 160">
+                    <circle class="sync-ring-bg" cx="80" cy="80" r="75"></circle>
+                    <circle class="sync-ring-fill" id="sync-ring" cx="80" cy="80" r="75"></circle>
+                </svg>
+                <div class="sync-glow"></div>
+            </div>
+        </div>
+
+        <div id="sec-final" class="fs-layer interactive">
+            <h2 class="serif" id="final-text">Bu kitabın baş yazarı olmak ister misin?</h2>
+            <div class="final-interaction-area" id="final-interaction-area">
+                <div class="final-buttons" id="final-buttons">
+                    <button class="btn-yes" id="btn-yes">Evettt</button>
+                    <button class="btn-no" id="btn-no">Hayır</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
